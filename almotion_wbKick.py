@@ -13,7 +13,10 @@ from spatialmath import *
 import numpy as np
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f8679c4baf0c4956e89531af9ae603a7179064f6
 def computePath(motion_service, effector, frame):
     dx      = 0.05                 # translation axis X (meters)
     dz      = 0.05                 # translation axis Z (meters)
@@ -133,7 +136,11 @@ def main(session):
     posture_service.goToPosture("StandInit", 0.3)
 
     # Go to rest position
+<<<<<<< HEAD
     # motion_service.rest()
+=======
+    motion_service.rest()
+>>>>>>> f8679c4baf0c4956e89531af9ae603a7179064f6
 
 
 if __name__ == "__main__":
