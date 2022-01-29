@@ -25,17 +25,31 @@ motion = s.service("ALMotion")
 # useSensorValues = True
 # result          = motion_service.getPosition(name, frame, useSensorValues)
 # planeId = p.loadSDF("stadium.sdf")
-goalPostStartPos = [0, 0, 1]
-goalPostStartOrientation = p.getQuaternionFromEuler([np.pi/2, 0, 0])
+goalPostStartPos = [4, 0, 0]  # -26.7
+goalPostStartOrientation = p.getQuaternionFromEuler([np.pi/2, 0, np.pi])
 
 goalPostId = p.loadURDF("goal_post.urdf", goalPostStartPos,
-                        goalPostStartOrientation, globalScaling=1, useFixedBase=False)
+                        goalPostStartOrientation, globalScaling=0.1, useFixedBase=False)
+
+
+# Ball config
+# 68–70 cm
+mass = 0.044  # 410 - 450 g
+z = 0.314
+root = [0, 0, 0]
+sphereRadius = 0.05  # 0.05
+legPose = np.array(env.robot.getPosition())+np.array([0.16, -0.08, 0])
+x, y, z = legPose  # result #0, 0, 0
+
+basePosition = [x, y, z]  # location of the leg
 
 offset = 0
 scale = 1
-ball = p.loadURDF("soccerball.urdf", [offset, 0, 1], globalScaling=scale*0.1)
+
+ball = p.loadURDF("soccerball.urdf", basePosition, globalScaling=scale*0.1)
 p.changeDynamics(ball, -1, linearDamping=0, angularDamping=0,
                  rollingFriction=0.001, spinningFriction=0.001)
+
 p.changeVisualShape(ball, -1, rgbaColor=[0.8, 0.8, 0.8, 1])
 
 
@@ -52,24 +66,12 @@ def swapAction(action, lstPos1, lstPos2):
     return action
 
 
-# Ball config
-# 68–70 cm
-mass = 0.044  # 410 - 450 g
-z = 0.314
-root = [0, 0, 0]
-sphereRadius = 0.05  # 0.05
-legPose = np.array(env.robot.getPosition())+np.array([0.16, -0.08, 0])
-x, y, z = legPose  # result #0, 0, 0
+# baseOrientation = [0, 0, 0, 1]
+# colSphereId = p.createCollisionShape(p.GEOM_SPHERE, radius=sphereRadius)
+# visualShapeId = p.createVisualShape(p.GEOM_SPHERE, radius=sphereRadius)
 
-
-basePosition = [x, y, z]  # location of the leg
-baseOrientation = [0, 0, 0, 1]
-colSphereId = p.createCollisionShape(p.GEOM_SPHERE, radius=sphereRadius)
-visualShapeId = p.createVisualShape(p.GEOM_SPHERE, radius=sphereRadius)
-
-sphereUid = p.createMultiBody(
-    mass, colSphereId, visualShapeId, basePosition, baseOrientation)
-
+# sphereUid = p.createMultiBody(
+#     mass, colSphereId, visualShapeId, basePosition, baseOrientation)
 
 # for i in range(100_000):
 while p.isConnected():
