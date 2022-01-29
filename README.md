@@ -14,3 +14,5 @@ https://community-static.aldebaran.com/resources/2.8.7/Choregraphe+Suite/Linux64
 - pybullet==2.8.4
 - spatialmath-python
 - numpy
+- gym
+- humanoid_gym
